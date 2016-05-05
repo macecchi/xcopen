@@ -1,11 +1,12 @@
 #!/bin/bash
 EXT='xcworkspace'
-dir=$1
+
+DIR=${1:-.} # DIR is either the first argument or the current directory
 
 shopt -s nullglob
 
 found=0
-for i in $1/*.${EXT}; do
+for i in ${DIR}/*.${EXT}; do
     open -a Xcode "$i"
     found=1
     break
