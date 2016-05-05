@@ -1,17 +1,32 @@
 #!/bin/bash
-EXT='xcworkspace'
 
-DIR=${1:-.} # DIR is either the first argument or the current directory
+# DIR is either the first argument or the current directory
+DIR=${1:-.}
 
 shopt -s nullglob
 
 found=0
+
+# Try to open the first xcworkspace file found
+EXT='xcworkspace'
 for i in ${DIR}/*.${EXT}; do
     open -a Xcode "$i"
     found=1
     break
 done
-[ $found -eq 0 ] && echo "No Xcode workspace found"
+
+# If nothing was found, try to open the first xcodeproj file found
+if [ $found -eq 0 ] 
+	then
+		EXT='xcodeproj'
+		for i in ${DIR}/*.${EXT}; do
+		    open -a Xcode "$i"
+		    found=1
+		    break
+		done
+fi
+
+# Print message if nothing was found
+[ $found -eq 0 ] && echo "No xcworkspace/xcodeproj file found in the specified directory."
 
 shopt -u nullglob
-
