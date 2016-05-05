@@ -18,6 +18,15 @@ open -a Xcode "My Awesome App.xcworkspace"
 xcopen
 ```
 
+## Installation
+
+__xcopen__ can be installed from [Homebrew](http://brew.sh) from a custom [Tap](https://github.com/Homebrew/brew/blob/master/share/doc/homebrew/How-to-Create-and-Maintain-a-Tap.md#how-to-create-and-maintain-a-tap).
+
+```bash
+brew tap macecchi/tap
+brew install xcopen
+```
+
 
 ## Usage
 
