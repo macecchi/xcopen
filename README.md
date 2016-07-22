@@ -39,6 +39,12 @@ That's all you need to open the workspace/project in the current directory. If y
 xcopen /path/to/MyAwesomeApp/
 ```
 
+You can also use the flag `--beta` or simply `-b` to open the project using Xcode-beta, if you have it installed:
+
+```bash
+xcopen --beta /path/to/MyAwesomeApp/
+```
+
 
 ## License
 
