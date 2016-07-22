@@ -1,32 +1,66 @@
 #!/bin/bash
+# Default options
+DIR="."
+BETA=false
 
-# DIR is either the first argument or the current directory
-DIR=${1:-.}
+# Usage
+USAGE="Usage: $0 [-b|--beta] [PATH]"
 
+# Parse arguments
+while [ $# -gt 0 ]
+do
+  key="$1"
+  case $key in
+    -h|--help)
+    echo "$USAGE"
+    exit
+    ;;
+    -b|--beta)
+    BETA=true
+    shift
+    ;;
+    *)
+    if [ $# -eq 1 ]; then
+      DIR=$key
+      shift
+    else
+      echo "$USAGE"
+      exit 1
+    fi
+    ;;
+  esac
+done
 shopt -s nullglob
 
-found=0
+FOUND=0
+if [ $BETA = false ]; then
+  APP="Xcode"
+else
+  APP="Xcode-beta"
+fi
 
 # Try to open the first xcworkspace file found
 EXT='xcworkspace'
-for i in ${DIR}/*.${EXT}; do
-    open -a Xcode "$i"
-    found=1
-    break
+for i in $DIR/*.$EXT; do
+  open -a $APP "$i"
+  FOUND=1
+  break
 done
 
 # If nothing was found, try to open the first xcodeproj file found
-if [ $found -eq 0 ] 
-	then
-		EXT='xcodeproj'
-		for i in ${DIR}/*.${EXT}; do
-		    open -a Xcode "$i"
-		    found=1
-		    break
-		done
+if [ $FOUND -eq 0 ]; then
+  EXT='xcodeproj'
+  for i in $DIR/*.$EXT; do
+    open -a $APP "$i"
+    FOUND=1
+    break
+  done
 fi
 
-# Print message if nothing was found
-[ $found -eq 0 ] && echo "No xcworkspace/xcodeproj file found in the specified directory."
-
 shopt -u nullglob
+
+# Print message if nothing was found
+if [ $FOUND -eq 0 ]; then
+  echo "No xcworkspace/xcodeproj file found in the specified directory."
+  exit 1
+fi
