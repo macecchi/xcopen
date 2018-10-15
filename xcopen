@@ -1,10 +1,11 @@
 #!/bin/bash
 # Default options
 DIR="."
+DEFAULT=false
 BETA=false
 
 # Usage
-USAGE="Usage: $0 [-b|--beta] [PATH]"
+USAGE="Usage: $0 [-d|--default] [-b|--beta] [PATH]"
 
 # Parse arguments
 while [ $# -gt 0 ]
@@ -14,6 +15,10 @@ do
     -h|--help)
     echo "$USAGE"
     exit
+    ;;
+    -d|--default)
+    DEFAULT=true
+    shift
     ;;
     -b|--beta)
     BETA=true
@@ -34,15 +39,19 @@ shopt -s nullglob
 
 FOUND=0
 if [ $BETA = false ]; then
-  APP="Xcode"
+  if [ $DEFAULT = false ]; then
+    APP="-a Xcode"
+  else
+    APP=""
+  fi
 else
-  APP="Xcode-beta"
+  APP="-a Xcode-beta"
 fi
 
 # Try to open the first xcworkspace file found
 EXT='xcworkspace'
 for i in $DIR/*.$EXT; do
-  open -a $APP "$i"
+  open $APP "$i"
   FOUND=1
   break
 done
@@ -51,7 +60,7 @@ done
 if [ $FOUND -eq 0 ]; then
   EXT='xcodeproj'
   for i in $DIR/*.$EXT; do
-    open -a $APP "$i"
+    open $APP "$i"
     FOUND=1
     break
   done
