@@ -69,7 +69,7 @@ fi
 # If nothing was found, try to open the first Package.swift file found
 if [ $FOUND -eq 0 ]; then
   if [ -f "$DIR/Package.swift" ]; then
-    open $APP "$i"
+    open $APP "Package.swift"
     FOUND=1
   fi
 fi
