@@ -66,10 +66,18 @@ if [ $FOUND -eq 0 ]; then
   done
 fi
 
+# If nothing was found, try to open the first Package.swift file found
+if [ $FOUND -eq 0 ]; then
+  if [ -f "$DIR/Package.swift" ]; then
+    open $APP "Package.swift"
+    FOUND=1
+  fi
+fi
+
 shopt -u nullglob
 
 # Print message if nothing was found
 if [ $FOUND -eq 0 ]; then
-  echo "No xcworkspace/xcodeproj file found in the specified directory."
+  echo "No xcworkspace/xcodeproj/Package.swift file found in the specified directory."
   exit 1
 fi
